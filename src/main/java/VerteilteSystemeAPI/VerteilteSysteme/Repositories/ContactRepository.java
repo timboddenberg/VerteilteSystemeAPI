@@ -3,9 +3,11 @@ package VerteilteSystemeAPI.VerteilteSysteme.Repositories;
 import VerteilteSystemeAPI.VerteilteSysteme.Entities.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface ContactRepository extends JpaRepository<Contact,Integer> {
 
-    public Contact findByCategory(String category);
+    List<Contact> findByCategory(String category);
 
-    public Contact findByCustomerNumber(String customerNumber);
+    List<Contact> findByCustomerNumber(String customerNumber);
 }

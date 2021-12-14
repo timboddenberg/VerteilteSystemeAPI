@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 public class UserController {
 
@@ -26,12 +23,7 @@ public class UserController {
     public String getAllUsers()
     {
         // curl GET http://localhost:8080/user
-        List<User> userList = new ArrayList<>();
-
-        if (userModel != null)
-            userList = userModel.findAll();
-
-        return new Gson().toJson(userList);
+        return new Gson().toJson(userModel.findAll());
     }
 
     @GetMapping("/users/{id}")

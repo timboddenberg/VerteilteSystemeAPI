@@ -10,7 +10,7 @@ public class Contact {
     private int Id;
 
     @Column(unique = true)
-    public String CustomerNumber;
+    public String customerNumber;
 
     public String Subject;
 
@@ -20,16 +20,16 @@ public class Contact {
 
     public String Email;
 
-    public String Category;
+    public String category;
 
     public String Description;
 
     public String getCustomerNumber() {
-        return CustomerNumber;
+        return customerNumber;
     }
 
     public void setCustomerNumber(String customerNumber) {
-        CustomerNumber = customerNumber;
+        customerNumber = customerNumber;
     }
 
     public String getSubject() {
@@ -65,11 +65,11 @@ public class Contact {
     }
 
     public String getCategory() {
-        return Category;
+        return category;
     }
 
     public void setCategory(String category) {
-        Category = category;
+        category = category;
     }
 
     public String getDescription() {

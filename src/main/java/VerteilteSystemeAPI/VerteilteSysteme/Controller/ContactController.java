@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
 public class ContactController {
 
     @Autowired
-    private ContactRepository contactRepository;
+    private final ContactRepository contactRepository;
 
     public ContactController(ContactRepository contactRepository)
     {
@@ -38,16 +39,16 @@ public class ContactController {
     public String getSpecificContact(@PathVariable String category)
     {
         try{
-            Contact specificContact = contactRepository.findByCategory(category);
+            List<Contact> specificContact = contactRepository.findByCategory(category);
 
-            if (specificContact == null)
+            if (specificContact.isEmpty())
                 throw new CategoryNotFoundException(category);
 
-            return new Gson().toJson(specificContact);
+            return new Gson().toJson(specificContact.get(0));
         }
         catch (CategoryNotFoundException exception)
         {
-            return "User Not Found";
+            return "Category Not Found.";
         }
     }
 
@@ -66,12 +67,12 @@ public class ContactController {
     public String modifyContact(@RequestBody Contact newContact, @PathVariable String category)
     {
         try{
-            Contact contact = contactRepository.findByCategory(newContact.getCustomerNumber());
+            List<Contact> contact = contactRepository.findByCategory(newContact.getCustomerNumber());
 
-            if (contact == null)
+            if (contact.isEmpty())
                 throw new CategoryNotFoundException(category);
 
-            return new Gson().toJson(contactRepository.save(contact));
+            return new Gson().toJson(contactRepository.save(contact.get(0)));
 
         } catch (UserNotFoundException exception)
         {
