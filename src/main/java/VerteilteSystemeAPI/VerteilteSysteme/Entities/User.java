@@ -1,9 +1,6 @@
 package VerteilteSystemeAPI.VerteilteSysteme.Entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -12,6 +9,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
+    @Column(unique = true)
     private String UserName;
 
     private String FirstName;
