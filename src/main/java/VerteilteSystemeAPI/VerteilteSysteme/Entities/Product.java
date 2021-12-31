@@ -10,15 +10,15 @@ public class Product {
     private int Id;
 
     @Column(unique = true)
-    private String Name;
+    private String name;
 
-    private Double Price;
+    private Double price;
 
-    private String Brand;
+    private String brand;
 
-    private int Since;
+    private int since;
 
-    private String Url;
+    private String url;
 
     public int getId() {
         return Id;
@@ -29,42 +29,42 @@ public class Product {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public Double getPrice() {
-        return Price;
+        return price;
     }
 
     public void setPrice(Double price) {
-        Price = price;
+        this.price = price;
     }
 
     public String getBrand() {
-        return Brand;
+        return brand;
     }
 
     public void setBrand(String brand) {
-        Brand = brand;
+        this.brand = brand;
     }
 
     public int getSince() {
-        return Since;
+        return since;
     }
 
     public void setSince(int since) {
-        Since = since;
+        this.since = since;
     }
 
     public String getUrl() {
-        return Url;
+        return url;
     }
 
     public void setUrl(String url) {
-        Url = url;
+        this.url = url;
     }
 }

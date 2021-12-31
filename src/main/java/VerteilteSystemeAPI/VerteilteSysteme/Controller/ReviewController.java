@@ -6,10 +6,11 @@ import VerteilteSystemeAPI.VerteilteSysteme.Repositories.ReviewRepository;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class ReviewController {
+public class ReviewController{
 
     @Autowired
     ReviewRepository reviewRepository;
@@ -28,13 +29,14 @@ public class ReviewController {
 
     @PostMapping("/reviews")
     @ResponseStatus(HttpStatus.CREATED)
-    public String addReview(@RequestBody Review review)
+    public ResponseEntity<String> addReview(@RequestBody Review review)
     {
-        return new Gson().toJson(reviewRepository.save(review));
+        reviewRepository.save(review);
+        return new ResponseEntity<>("HTTP/1.1 201 Created",HttpStatus.CREATED);
     }
 
     @PutMapping("/reviews/{id}")
-    public String changeReview(@RequestBody Review newReview, @PathVariable int id)
+    public ResponseEntity<String> changeReview(@RequestBody Review newReview, @PathVariable int id)
     {
         try {
             reviewRepository.findById(newReview.getId()).map( review -> {
@@ -43,20 +45,21 @@ public class ReviewController {
                 review.setUsername(newReview.getUsername());
                 review.setText(newReview.getText());
 
-                return new Gson().toJson(reviewRepository.save(review));
-            });
+                reviewRepository.save(review);
+                return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
+            }).orElseThrow(ReviewNotFoundException::new);
+
+            return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
         } catch (ReviewNotFoundException exception)
         {
-            return "Review not Found";
+            return new ResponseEntity<>("HTTP/1.1 400 Bad Request - Review Not Found", HttpStatus.BAD_REQUEST);
         }
-
-        return "Something went wrong.";
     }
 
     @DeleteMapping("/reviews/{id}")
-    public String deleteReview(@PathVariable int id)
+    public ResponseEntity<String> deleteReview(@PathVariable int id)
     {
         reviewRepository.deleteById(id);
-        return "Löschen erfolgreich";
+        return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
     }
 }

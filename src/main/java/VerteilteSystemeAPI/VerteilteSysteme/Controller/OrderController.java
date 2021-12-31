@@ -5,12 +5,14 @@ import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.OrderNotFoundException;
 import VerteilteSystemeAPI.VerteilteSysteme.Repositories.OrderRepository;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-public class OrderController {
+public class OrderController{
 
     @Autowired
     OrderRepository orderRepository;
@@ -41,13 +43,14 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public String addOrder(@RequestBody Orders order)
+    public ResponseEntity<String> addOrder(@RequestBody Orders order)
     {
-        return new Gson().toJson(orderRepository.save(order));
+        orderRepository.save(order);
+        return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
     }
 
     @PutMapping("/orders/{id}")
-    public String replaceOrder(@RequestBody Orders newOrder, @PathVariable int id)
+    public ResponseEntity<String> replaceOrder(@RequestBody Orders newOrder, @PathVariable int id)
     {
         try{
             orderRepository.findById(id).map(order -> {
@@ -57,21 +60,21 @@ public class OrderController {
                 order.setQuantity(newOrder.getQuantity());
                 order.setTotalCosts(newOrder.getTotalCosts());
 
-                return new Gson().toJson(orderRepository.save(order));
-            });
+                orderRepository.save(order);
+                return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
+            }).orElseThrow(OrderNotFoundException::new);
+            return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
         } catch (OrderNotFoundException exception)
         {
-            return "Order Not Found.";
+            return new ResponseEntity<>("HTTP/1.1 400 Bad Request - User Not Found", HttpStatus.BAD_REQUEST);
         }
-
-        return "Something went wrong.";
     }
 
     @DeleteMapping("/orders/{id}")
-    public String deleteOrder(int id)
+    public ResponseEntity<String> deleteOrder(int id)
     {
         orderRepository.deleteById(id);
-        return "Löschen erfolgreich.";
+        return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
     }
 
 

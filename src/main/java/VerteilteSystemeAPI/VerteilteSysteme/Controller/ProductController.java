@@ -7,13 +7,14 @@ import VerteilteSystemeAPI.VerteilteSysteme.Repositories.ProductRepository;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class ProductController {
+public class ProductController{
 
     @Autowired
     private ProductRepository productRepository;
@@ -21,7 +22,6 @@ public class ProductController {
     @GetMapping("/products")
     public String getAllProducts()
     {
-        // curl GET http://localhost:8080/products
         List<Product> productList = new ArrayList<>();
 
         if (productRepository != null)
@@ -43,19 +43,36 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/products")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Product addProduct(@RequestBody Product product)
+    @GetMapping("/products/byname/{name}")
+    public String getSpecificProductByName(@PathVariable String name)
     {
-        // curl -H "Content-Type: application/json" -X POST http://localhost/user/add -d "{\"id\":\"1\",\"UserName\":\"Tim\", \"FirstName\":\"Tim\",\"LastName\":\"Boddenberg\",\"Email\":\"t@b.de\",\"Password\":\"12345\"}"
-        // {"UserName":"timboddenberg","FirstName":"Tim","LastName":"Boddenberg","Email":"t@b.de","Password":"12345"}
+        try {
+            List<Product> productList = productRepository.findByName(name);
 
-        return productRepository.save(product);
+            if (productList.isEmpty())
+                throw new ProductNotFoundException(0);
+
+            return new Gson().toJson(productList.get(0));
+        } catch (ProductNotFoundException exception)
+        {
+            return "Product Not Found";
+        }
     }
 
-    @PutMapping("/products/{id}")
+    @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public String modifyProduct(@RequestBody Product newProduct, @PathVariable int id)
+    public ResponseEntity<String> addProduct(@RequestBody Product product)
+    {
+        // Json:
+        // {"id":1,"name":"Computer","price":"999.00","brand":"Dell","since":"2021","url":"/dellcomputer"}
+
+        productRepository.save(product);
+        return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
+    }
+
+    @PutMapping("/products")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> modifyProduct(@RequestBody Product newProduct)
     {
         try{
             productRepository.findById(newProduct.getId()).map(product-> {
@@ -66,18 +83,19 @@ public class ProductController {
                 product.setUrl(newProduct.getUrl());
                 return new Gson().toJson(productRepository.save(product));
             }).orElseThrow(() -> new ProductNotFoundException(newProduct.getId()));
+
+            return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
         } catch (UserNotFoundException exception)
         {
-            return "User not Found";
+            return new ResponseEntity<>("HTTP/1.1 400 Bad Request - User Not Found", HttpStatus.BAD_REQUEST);
         }
-
-        return "Something went wrong.";
     }
 
     @DeleteMapping("/products/{id}")
-    public void deleteProduct(@PathVariable int id)
+    public ResponseEntity<String> deleteProduct(@PathVariable int id)
     {
         productRepository.deleteById(id);
+        return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
     }
 
 }
