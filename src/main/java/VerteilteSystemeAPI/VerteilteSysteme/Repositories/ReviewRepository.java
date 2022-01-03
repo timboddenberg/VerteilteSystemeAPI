@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review,Integer> {
 
-    public List<Review> findByRating(String rating);
+    public List<Review> findByRating(int rating);
+
+    public List<Review> findByUsername(String username);
 
 }

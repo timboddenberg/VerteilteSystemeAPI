@@ -31,15 +31,13 @@ public class OrderController{
 
             if (orderList.isEmpty())
                 throw new OrderNotFoundException();
-            else
-                new Gson().toJson(orderList);
+
+            return new Gson().toJson(orderList.get(0));
 
         } catch (OrderNotFoundException exception)
         {
             return "Order Not Found";
         }
-
-        return "Something went wrong.";
     }
 
     @PostMapping("/orders")
@@ -71,7 +69,7 @@ public class OrderController{
     }
 
     @DeleteMapping("/orders/{id}")
-    public ResponseEntity<String> deleteOrder(int id)
+    public ResponseEntity<String> deleteOrder(@PathVariable int id)
     {
         orderRepository.deleteById(id);
         return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);

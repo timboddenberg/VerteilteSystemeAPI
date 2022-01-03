@@ -12,71 +12,79 @@ public class Contact {
     @Column(unique = true)
     public String customerNumber;
 
-    public String Subject;
+    public String subject;
 
-    public String FirstName;
+    public String firstName;
 
-    public String LastName;
+    public String lastName;
 
-    public String Email;
+    public String email;
 
     public String category;
 
-    public String Description;
+    public String description;
 
     public String getCustomerNumber() {
-        return customerNumber;
+        return this.customerNumber;
     }
 
     public void setCustomerNumber(String customerNumber) {
-        customerNumber = customerNumber;
+        this.customerNumber = customerNumber;
     }
 
     public String getSubject() {
-        return Subject;
+        return subject;
     }
 
     public void setSubject(String subject) {
-        Subject = subject;
+        this.subject = subject;
     }
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
-        FirstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getCategory() {
-        return category;
+        return this.category;
     }
 
     public void setCategory(String category) {
-        category = category;
+        this.category = category;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 }

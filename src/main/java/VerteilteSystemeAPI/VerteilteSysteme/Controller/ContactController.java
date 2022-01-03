@@ -2,6 +2,7 @@ package VerteilteSystemeAPI.VerteilteSysteme.Controller;
 
 import VerteilteSystemeAPI.VerteilteSysteme.Entities.Contact;
 import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.CategoryNotFoundException;
+import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.ContactNotFoundException;
 import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.UserNotFoundException;
 import VerteilteSystemeAPI.VerteilteSysteme.Repositories.ContactRepository;
 import com.google.gson.Gson;
@@ -52,6 +53,23 @@ public class ContactController{
         }
     }
 
+    @GetMapping("/contact-requests/bycustomernumber/{customerNumber}")
+    public String getSpecificContactByCustomerNumber(@PathVariable String customerNumber)
+    {
+        try {
+            List<Contact> contactList = contactRepository.findByCustomerNumber(customerNumber);
+
+            if (! contactList.isEmpty())
+                return new Gson().toJson(contactList.get(0));
+
+            throw new ContactNotFoundException("0");
+
+        } catch (ContactNotFoundException exception)
+        {
+            return "Contact Not Found";
+        }
+    }
+
     @PostMapping("/contact-requests")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> addContact(@RequestBody Contact contact)
@@ -63,17 +81,26 @@ public class ContactController{
         return new ResponseEntity<>("HTTP/1.1 201 Created",HttpStatus.CREATED);
     }
 
-    @PutMapping("/contact-requests/{category}")
+    @PutMapping("/contact-requests/{customerNumber}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> modifyContact(@RequestBody Contact newContact, @PathVariable String category)
+    public ResponseEntity<String> modifyContact(@RequestBody Contact newContact, @PathVariable String customerNumber)
     {
         try{
-            List<Contact> contact = contactRepository.findByCategory(newContact.getCustomerNumber());
+            List<Contact> contactList = contactRepository.findByCustomerNumber(newContact.getCustomerNumber());
 
-            if (contact.isEmpty())
-                throw new CategoryNotFoundException(category);
+            if (contactList.isEmpty())
+                throw new ContactNotFoundException("0");
 
-            contactRepository.save(contact.get(0));
+            Contact contact = contactList.get(0);
+            contact.setCustomerNumber(newContact.getCustomerNumber());
+            contact.setFirstName(newContact.getFirstName());
+            contact.setLastName(newContact.getLastName());
+            contact.setCategory(newContact.getCategory());
+            contact.setSubject(newContact.getSubject());
+            contact.setDescription(newContact.getDescription());
+            contact.setEmail(newContact.getEmail());
+
+            contactRepository.save(contact);
             return new ResponseEntity<>("HTTP/1.1 200 OK", HttpStatus.OK);
 
         } catch (UserNotFoundException exception)

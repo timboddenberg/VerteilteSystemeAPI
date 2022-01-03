@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ReviewController{
 
@@ -22,9 +24,34 @@ public class ReviewController{
     }
 
     @GetMapping("/ratings/{rating}")
-    public String getReviewsByRating(@PathVariable String rating)
+    public String getReviewsByRating(@PathVariable int rating)
     {
-        return new Gson().toJson(reviewRepository.findByRating(rating));
+        try{
+            List<Review> reviewList = reviewRepository.findByRating(rating);
+
+            if (reviewList.isEmpty())
+                throw new ReviewNotFoundException();
+
+            return new Gson().toJson(reviewList.get(0));
+        } catch (ReviewNotFoundException exception) {
+            return "Review Not Found";
+        }
+    }
+
+    @GetMapping("/reviews/{username}")
+    public String getReviewsById(@PathVariable String username)
+    {
+        try{
+            List<Review> reviewList = reviewRepository.findByUsername(username);
+
+            if (reviewList.isEmpty())
+                throw new ReviewNotFoundException();
+
+            return new Gson().toJson(reviewList.get(0));
+        } catch (ReviewNotFoundException exception)
+        {
+            return "Review Not Found";
+        }
     }
 
     @PostMapping("/reviews")

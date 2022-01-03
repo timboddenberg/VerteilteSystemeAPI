@@ -14,9 +14,9 @@ public class Review {
 
     private int rating;
 
-    private String Username;
+    private String username;
 
-    private String Text;
+    private String text;
 
     public int getId() {
         return Id;
@@ -35,18 +35,18 @@ public class Review {
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        Username = username;
+        this.username = username;
     }
 
     public String getText() {
-        return Text;
+        return text;
     }
 
     public void setText(String text) {
-        Text = text;
+        this.text = text;
     }
 }
