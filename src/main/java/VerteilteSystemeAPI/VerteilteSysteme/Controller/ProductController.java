@@ -5,6 +5,7 @@ import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.ProductNotFoundException;
 import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.UserNotFoundException;
 import VerteilteSystemeAPI.VerteilteSysteme.Repositories.ProductRepository;
 import com.google.gson.Gson;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class ProductController{
     private ProductRepository productRepository;
 
     @GetMapping("/products")
+    @ApiOperation("Gibt alle Produkte aus dem Produkt Repository wieder, ohne diese zu filtern. Rückgabewert ist eine Liste als Json String formatiert.")
     public String getAllProducts()
     {
         List<Product> productList = new ArrayList<>();
@@ -31,6 +33,7 @@ public class ProductController{
     }
 
     @GetMapping("/products/{id}")
+    @ApiOperation("Gibt ein Produkt anhand der gegebenen Id zurück. Da die Id unique ist, wird hier nur ein Objekt als Json String zurückgegeben.")
     public String getSpecificProduct(@PathVariable int id)
     {
         try{
@@ -44,6 +47,7 @@ public class ProductController{
     }
 
     @GetMapping("/products/byname/{name}")
+    @ApiOperation("Gibt ein Produkt anhand seines Namens als Json String zurück.")
     public String getSpecificProductByName(@PathVariable String name)
     {
         try {
@@ -60,6 +64,7 @@ public class ProductController{
     }
 
     @PostMapping("/products")
+    @ApiOperation("Fügt ein Produkt hinzu. Wenn die Operation erfolgreich war, wird der Http-Statuscode 200 zurückgegeben.")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> addProduct(@RequestBody Product product)
     {
@@ -72,6 +77,7 @@ public class ProductController{
 
     @PutMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Ändert ein bestehendes Produkt ab. Wenn die Operation erfolgreich war, wird der Http-Statuscode 200 zurückgegeben, sonst 400.")
     public ResponseEntity<String> modifyProduct(@RequestBody Product newProduct)
     {
         try{
@@ -92,6 +98,7 @@ public class ProductController{
     }
 
     @DeleteMapping("/products/{id}")
+    @ApiOperation("Löscht ein Produkt anhand der Id. Wenn die Operation erfolgreich ist, wird der Http-Statuscode 200 zurückgegeben.")
     public ResponseEntity<String> deleteProduct(@PathVariable int id)
     {
         productRepository.deleteById(id);

@@ -4,6 +4,7 @@ import VerteilteSystemeAPI.VerteilteSysteme.Entities.Orders;
 import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.OrderNotFoundException;
 import VerteilteSystemeAPI.VerteilteSysteme.Repositories.OrderRepository;
 import com.google.gson.Gson;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,15 @@ public class OrderController{
     OrderRepository orderRepository;
 
     @GetMapping("/orders")
+    @ApiOperation("Gibt alle Bestellungen zurück, ohne diese zu filtern. Rückgabewert ist eine Liste als Json String formatiert.")
     public String getAllOrders()
     {
         return new Gson().toJson(orderRepository.findAll());
     }
 
     @GetMapping("/orders/{product}")
-    public String getOrderById(@PathVariable String product)
+    @ApiOperation("Gibt eine Bestellung anhand eines Produktes zurück. Rückgabewert ist ein Bestellobjekt als Json String formatiert.")
+    public String getOrderByProduct(@PathVariable String product)
     {
         try {
             List<Orders> orderList = orderRepository.findByProduct(product);
@@ -41,6 +44,7 @@ public class OrderController{
     }
 
     @PostMapping("/orders")
+    @ApiOperation("Fügt eine Bestellung hinzu. Wenn die Operation erfolgreich ist, wird der Http-Statuscode 200 zurückgegeben.")
     public ResponseEntity<String> addOrder(@RequestBody Orders order)
     {
         orderRepository.save(order);
@@ -48,6 +52,7 @@ public class OrderController{
     }
 
     @PutMapping("/orders/{id}")
+    @ApiOperation("Ändert eine bestehende Bestellung ab. wenn die Operation erfolgreich ist, wird der Http-Statuscode 200 zurückgegeben, sonst 400.")
     public ResponseEntity<String> replaceOrder(@RequestBody Orders newOrder, @PathVariable int id)
     {
         try{
@@ -69,6 +74,7 @@ public class OrderController{
     }
 
     @DeleteMapping("/orders/{id}")
+    @ApiOperation("Löscht eine Bestellung anhand der gegebenen Id. Ist die Operation erfolgreich, wird der Http-Statuscode 200 zurückgegeben.")
     public ResponseEntity<String> deleteOrder(@PathVariable int id)
     {
         orderRepository.deleteById(id);

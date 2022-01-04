@@ -6,6 +6,7 @@ import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.ContactNotFoundException;
 import VerteilteSystemeAPI.VerteilteSysteme.Exceptions.UserNotFoundException;
 import VerteilteSystemeAPI.VerteilteSysteme.Repositories.ContactRepository;
 import com.google.gson.Gson;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class ContactController{
     }
 
     @GetMapping("/contact-requests")
+    @ApiOperation("Gibt alle Kontaktanfragen zurück, ohne diese zu Filtern. Rückgabewert ist eine Liste als Json String formatiert.")
     public String getAllContactRequests()
     {
         List<Contact> contactList = new ArrayList<>();
@@ -37,6 +39,7 @@ public class ContactController{
     }
 
     @GetMapping("/contact-requests/{category}")
+    @ApiOperation("Gibt eine Kontaktanfrage anhand der Kategorie als Json String formatiert zurück.")
     public String getSpecificContact(@PathVariable String category)
     {
         try{
@@ -54,6 +57,7 @@ public class ContactController{
     }
 
     @GetMapping("/contact-requests/bycustomernumber/{customerNumber}")
+    @ApiOperation("Gibt eine Kontaktanfrage anhand der Kundennummer als Json String formatiert zurück.")
     public String getSpecificContactByCustomerNumber(@PathVariable String customerNumber)
     {
         try {
@@ -71,6 +75,7 @@ public class ContactController{
     }
 
     @PostMapping("/contact-requests")
+    @ApiOperation("Fügt eine Kontaktanfrage hinzu. Wird die Operation erfolgreich ausgeführt, wird der Http-Statuscode 201 zurückgegeben.")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> addContact(@RequestBody Contact contact)
     {
@@ -82,6 +87,7 @@ public class ContactController{
     }
 
     @PutMapping("/contact-requests/{customerNumber}")
+    @ApiOperation("Ändert eine bestehende Kontaktabfrage ab. Wenn die Operation gelingt, wird der Http-Statuscode 200 zurückgegeben, sonst 400")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> modifyContact(@RequestBody Contact newContact, @PathVariable String customerNumber)
     {
@@ -110,6 +116,7 @@ public class ContactController{
     }
 
     @DeleteMapping("/contact-requests/{id}")
+    @ApiOperation("Löscht eine Kontaktanfrage anhand der gegebenen Id. Wenn die Operation gelingt, wird der Http-Statuscode 200 zurückgegeben.")
     public ResponseEntity<String> deleteContact(@PathVariable int id)
     {
         contactRepository.deleteById(id);
