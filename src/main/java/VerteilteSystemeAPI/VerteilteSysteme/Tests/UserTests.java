@@ -76,7 +76,7 @@ public class UserTests {
 
         mvc.perform(put("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(gson.toJson(user).replace("Id","id"))
+                .content(gson.toJson(user))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -99,7 +99,7 @@ public class UserTests {
 
         mvc.perform(delete("/users/" + id));
 
-        String response = mvc.perform(get("/users/byname/Boddenberg").accept(MediaType.APPLICATION_JSON)).andReturn().getResponse().getContentAsString();
+        String response = mvc.perform(get("/users/" + id).accept(MediaType.APPLICATION_JSON)).andReturn().getResponse().getContentAsString();
 
         assertThat(response.equals("User Not Found")).isTrue();
     }

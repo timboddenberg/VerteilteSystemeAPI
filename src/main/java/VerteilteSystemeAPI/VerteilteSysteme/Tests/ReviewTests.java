@@ -67,7 +67,7 @@ public class ReviewTests {
 
         mvc.perform(put("/reviews/" + review.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(review).replace("Id","id"))
+                        .content(gson.toJson(review))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 

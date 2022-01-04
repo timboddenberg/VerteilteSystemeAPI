@@ -71,7 +71,7 @@ public class ContactTests {
 
         mvc.perform(put("/contact-requests/" + contact.getCustomerNumber())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(contact).replace("Id","id"))
+                        .content(gson.toJson(contact))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 

@@ -10,7 +10,7 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int Id;
+    public int id;
 
     public String purchaser;
 
@@ -21,11 +21,11 @@ public class Orders {
     public int totalCosts;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public String getPurchaser() {

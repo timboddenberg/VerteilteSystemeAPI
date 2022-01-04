@@ -70,7 +70,7 @@ public class OrderTests {
 
         mvc.perform(put("/orders/" + order.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(order).replace("Id","id"))
+                        .content(gson.toJson(order))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 

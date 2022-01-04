@@ -71,7 +71,7 @@ public class ProductTests {
 
         mvc.perform(put("/products")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(gson.toJson(product).replace("Id","id"))
+            .content(gson.toJson(product))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
