@@ -20,7 +20,7 @@ public class ProductController{
     @Autowired
     private ProductRepository productRepository;
 
-    @GetMapping("/products")
+    @GetMapping(value = "/products", produces = "application/json")
     @ApiOperation("Gibt alle Produkte aus dem Produkt Repository wieder, ohne diese zu filtern. Rückgabewert ist eine Liste als Json String formatiert.")
     public String getAllProducts()
     {
@@ -32,7 +32,7 @@ public class ProductController{
         return new Gson().toJson(productList);
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping(value = "/products/{id}",produces = "application/json")
     @ApiOperation("Gibt ein Produkt anhand der gegebenen Id zurück. Da die Id unique ist, wird hier nur ein Objekt als Json String zurückgegeben.")
     public String getSpecificProduct(@PathVariable int id)
     {
@@ -46,7 +46,7 @@ public class ProductController{
         }
     }
 
-    @GetMapping("/products/byname/{name}")
+    @GetMapping(value = "/products/byname/{name}", produces = "application/json")
     @ApiOperation("Gibt ein Produkt anhand seines Namens als Json String zurück.")
     public String getSpecificProductByName(@PathVariable String name)
     {

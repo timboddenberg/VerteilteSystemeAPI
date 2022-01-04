@@ -26,7 +26,7 @@ public class ContactController{
         this.contactRepository = contactRepository;
     }
 
-    @GetMapping("/contact-requests")
+    @GetMapping(value = "/contact-requests", produces =  "application/json")
     @ApiOperation("Gibt alle Kontaktanfragen zurück, ohne diese zu Filtern. Rückgabewert ist eine Liste als Json String formatiert.")
     public String getAllContactRequests()
     {
@@ -38,7 +38,7 @@ public class ContactController{
         return new Gson().toJson(contactList);
     }
 
-    @GetMapping("/contact-requests/{category}")
+    @GetMapping(value = "/contact-requests/{category}", produces =  "application/json")
     @ApiOperation("Gibt eine Kontaktanfrage anhand der Kategorie als Json String formatiert zurück.")
     public String getSpecificContact(@PathVariable String category)
     {
@@ -56,7 +56,7 @@ public class ContactController{
         }
     }
 
-    @GetMapping("/contact-requests/bycustomernumber/{customerNumber}")
+    @GetMapping(value = "/contact-requests/bycustomernumber/{customerNumber}", produces =  "application/json")
     @ApiOperation("Gibt eine Kontaktanfrage anhand der Kundennummer als Json String formatiert zurück.")
     public String getSpecificContactByCustomerNumber(@PathVariable String customerNumber)
     {

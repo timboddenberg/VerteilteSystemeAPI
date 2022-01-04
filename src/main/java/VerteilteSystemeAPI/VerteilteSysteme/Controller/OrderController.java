@@ -18,14 +18,14 @@ public class OrderController{
     @Autowired
     OrderRepository orderRepository;
 
-    @GetMapping("/orders")
+    @GetMapping(value = "/orders",produces = "application/json")
     @ApiOperation("Gibt alle Bestellungen zurück, ohne diese zu filtern. Rückgabewert ist eine Liste als Json String formatiert.")
     public String getAllOrders()
     {
         return new Gson().toJson(orderRepository.findAll());
     }
 
-    @GetMapping("/orders/{product}")
+    @GetMapping(value = "/orders/{product}",produces = "application/json")
     @ApiOperation("Gibt eine Bestellung anhand eines Produktes zurück. Rückgabewert ist ein Bestellobjekt als Json String formatiert.")
     public String getOrderByProduct(@PathVariable String product)
     {
@@ -73,7 +73,7 @@ public class OrderController{
         }
     }
 
-    @DeleteMapping("/orders/{id}")
+    @DeleteMapping(value = "/orders/{id}")
     @ApiOperation("Löscht eine Bestellung anhand der gegebenen Id. Ist die Operation erfolgreich, wird der Http-Statuscode 200 zurückgegeben.")
     public ResponseEntity<String> deleteOrder(@PathVariable int id)
     {

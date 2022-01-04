@@ -18,14 +18,14 @@ public class ReviewController{
     @Autowired
     ReviewRepository reviewRepository;
 
-    @GetMapping("/reviews")
+    @GetMapping(value = "/reviews",produces = "application/json")
     @ApiOperation("Gibt alle Reviews aus dem Review Repository an, ohne diese zu filtern. Rückgabewert ist hier eine Liste als Json String formatiert.")
     public String getAllReviews()
     {
         return new Gson().toJson(reviewRepository.findAll());
     }
 
-    @GetMapping("/ratings/{rating}")
+    @GetMapping(value = "/ratings/{rating}", produces = "application/json")
     @ApiOperation("Gibt Reviews zurück, die dem gegebenen Rating entsprechen.")
     public String getReviewsByRating(@PathVariable int rating)
     {
@@ -41,7 +41,7 @@ public class ReviewController{
         }
     }
 
-    @GetMapping("/reviews/{username}")
+    @GetMapping(value = "/reviews/{username}", produces = "application/json")
     @ApiOperation("Gibt alle REviews zurück, bei dem der Username dem des übergebenen entspricht.")
     public String getReviewsById(@PathVariable String username)
     {
