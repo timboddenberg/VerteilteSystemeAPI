@@ -39,7 +39,7 @@ public class ProductTests {
         Product product = new Product();
         Id = product.getId();
         product.setName("TestComputer");
-        product.setPrice(1000.00);
+        product.setPrice(1000);
         product.setBrand("Dell");
         product.setSince(2021);
         product.setUrl("/Dell/TestComputer");

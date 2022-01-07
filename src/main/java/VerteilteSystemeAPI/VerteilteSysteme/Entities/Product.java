@@ -12,7 +12,7 @@ public class Product {
     @Column(unique = true)
     private String name;
 
-    private Double price;
+    private int price;
 
     private String brand;
 
@@ -36,11 +36,11 @@ public class Product {
         this.name = name;
     }
 
-    public Double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
