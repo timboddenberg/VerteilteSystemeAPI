@@ -23,14 +23,14 @@ public class UserController{
         userModel = userModel;
     }
 
-    @GetMapping("/users")
+    @GetMapping(value = "/users", produces = "application/json")
     @ApiOperation(value = "Gibt alle Nutzer aus dem User Repository an, ohne diese zu filtern. Rückgabewert ist hier eine Liste als Json String formatiert.")
     public String getAllUsers()
     {
         return new Gson().toJson(userRepository.findAll());
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping(value = "/users/{id}", produces = "application/json")
     @ApiOperation(value = "Gibt einen Nutzer anhand seiner Id zurück. Da die Id unique ist, gibt es immer nur einen Nutzer als Json formatiertes Objekt zurück.")
     public String getSpecificUser(@PathVariable int id)
     {
@@ -44,7 +44,7 @@ public class UserController{
         }
     }
 
-    @GetMapping("/users/byname/{name}")
+    @GetMapping(value = "/users/byname/{name}", produces = "application/json")
     @ApiOperation(value = "Gibt einen Nutzer anhand seines Namens zurück. Zurtst wird der Vorname überprüft, danach der Nachname. Rückgabewert ist ein Json formatiertes Objekt.")
     public String getSpecificUserByName(@PathVariable String name)
     {
@@ -72,8 +72,6 @@ public class UserController{
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> addUser(@RequestBody User user)
     {
-        // Json:
-        // {"UserName":"timboddenberg","FirstName":"Tim","LastName":"Boddenberg","Email":"t@b.de","Password":"12345"}
         userRepository.save(user);
         return new ResponseEntity<>("HTTP/1.1 201 Created",HttpStatus.CREATED);
     }
