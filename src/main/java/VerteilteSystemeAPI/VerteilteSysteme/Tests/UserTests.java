@@ -74,7 +74,7 @@ public class UserTests {
 
         user.setPassword("1");
 
-        mvc.perform(put("/users")
+        mvc.perform(put("/users/"+id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(user))
                 .accept(MediaType.APPLICATION_JSON))

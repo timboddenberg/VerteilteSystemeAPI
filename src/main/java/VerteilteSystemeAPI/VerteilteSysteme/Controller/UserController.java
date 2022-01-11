@@ -76,10 +76,10 @@ public class UserController{
         return new ResponseEntity<>("HTTP/1.1 201 Created",HttpStatus.CREATED);
     }
 
-    @PutMapping("/users")
+    @PutMapping("/users/{id}")
     @ApiOperation("Überschreibt einen Nutzer. Sollte der Vorgang erfolgreich sein, wird der Http-Statuscode 201 zurückgegeben, sonst 400.")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> modifyUser(@RequestBody User newUser)
+    public ResponseEntity<String> modifyUser(@RequestBody User newUser, @PathVariable int id)
     {
         try{
             userRepository.findById(newUser.getId()).map(user-> {
